@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Contacto</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+    <div class="contenedor">
+        <form class="minicont" id="formulario-contacto">
+            <h1>UATV</h1>
+
+            <h3>Nombre Completo</h3>
+            <input class="cajita" type="text" name="nombre" placeholder="Nombre completo" minlength="2" maxlength="50" required>
+
+            <h3>Correo Electrónico</h3>
+            <input class="cajita" type="email" name="correo" placeholder="ejemplo@correo.com" required>
+
+            <h3>Teléfono de Contacto</h3>
+            <input class="cajita" type="tel" name="telefono" placeholder="Teléfono de contacto" maxlength="12" required>
+
+            <h3>Comentarios</h3>
+            <textarea class="cajita" name="comentarios" placeholder="Escribe tus comentarios aquí..." maxlength="200" required></textarea>
+
+            <div class="g-recaptcha" data-sitekey="TU_SITE_KEY"></div>
+
+            <div class="mapa"
+                >
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2485.80720807936!2d-98.44797527593303!3d18.04265455257308!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85cf29f0b416a3cb%3A0x317bc639516bab8e!2sUnidad%20Academica%20Tulcingo%20de%20Valle!5e0!3m2!1ses-419!2smx!4v1790874120053!5m2!1ses-419!2smx" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+            <div class="grupo-botones">
+                <button type="submit" class="btn btn-primario">Enviar</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const formulario = document.getElementById("formulario-contacto");
+
+        formulario.addEventListener("submit", function (evento) {
+            evento.preventDefault();
+
+            if (!grecaptcha.getResponse()) {
+                alert("Completa la verificación de Google reCAPTCHA.");
+                return;
+            }
+
+            const datos = new FormData(formulario);
+            const mensaje = [
+                "Hola, quiero solicitar información. Estos son mis datos:",
+                `Nombre: ${datos.get("nombre")}`,
+                `Correo: ${datos.get("correo")}`,
+                `Teléfono: ${datos.get("telefono")}`,
+                `Comentarios: ${datos.get("comentarios")}`
+            ].join("\n");
+
+            const numeroWhatsApp = "2212694246";
+            const enlace = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+
+            window.location.href = enlace;
+        });
+
+        formulario.addEventListener("reset", function () {
+            setTimeout(() => grecaptcha.reset(), 0);
+        });
+    </script>
+</body>
+</html>
